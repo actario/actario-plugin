@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "actario": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@actario/cli",
+        "mcp"
+      ]
+    }
+  }
+}

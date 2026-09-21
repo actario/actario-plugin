@@ -1,0 +1,12 @@
+Actario
+Copyright 2026 Jacky Li
+
+This product includes software developed by Jacky Li.
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+This repository covers the Actario Claude Code plugin: its manifest, its MCP
+server declaration and the `actario-capture-chat` skill. The program the
+plugin launches is distributed separately as `@actario/cli` on npm, also under
+Apache-2.0. The Actario web application, backend services and database schema
+are not covered by this licence and are not distributed here.

@@ -1,0 +1,20 @@
+{
+  "name": "actario",
+  "version": "0.1.1",
+  "description": "Capture your AI conversations into Actario: redacted on your own machine, distilled into decisions, facts and open questions, held as pending until you confirm them.",
+  "author": {
+    "name": "Jacky Li"
+  },
+  "homepage": "https://github.com/actario/actario-plugin",
+  "repository": "https://github.com/actario/actario-plugin",
+  "keywords": [
+    "actario",
+    "distill",
+    "capture",
+    "redaction",
+    "memory",
+    "handoff",
+    "mcp"
+  ],
+  "license": "Apache-2.0"
+}

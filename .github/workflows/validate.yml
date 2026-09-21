@@ -1,0 +1,30 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # The gate: needs nothing but Node.
+      - name: Structure and version consistency
+        run: node scripts/check.mjs
+
+      # Advisory: the authority on manifest shape, but it needs the Claude CLI
+      # and may not run unauthenticated in CI. A failure here is worth reading,
+      # not worth blocking a merge on.
+      - name: claude plugin validate
+        continue-on-error: true
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude plugin validate ./plugins/actario --strict
