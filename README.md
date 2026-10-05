@@ -21,8 +21,8 @@ Then, in any chat:
 link my machine to Actario
 ```
 
-and give the API URL and capture token from your workspace's Settings page.
-Verify with **"run Actario's doctor"**.
+and approve the sign-in in the browser tab that opens (or, without a browser,
+at the URL and code Claude shows you). Verify with **"run Actario's doctor"**.
 
 Full plugin documentation: [`plugins/actario/README.md`](plugins/actario/README.md).
 

@@ -56,7 +56,7 @@ credential redaction, quality scoring, packing, upload.
 {
   "format": "distill.chat/v1",            // required, exactly this
   "platform": "cowork",                   // or claude_code, claude_desktop
-  "title": "<what this conversation was about>",
+  "title": "<the title the app shows for this chat — see the rule below>",
   "model": "<the model you are, if you know it>",
   "project": "<project name, only if explicitly known>",
   "repo_path": "<absolute repo path, only if explicitly known>",
@@ -82,6 +82,17 @@ Field rules, in order of how badly getting them wrong hurts:
   guessed path is worse than none — a decision filed under the wrong agent is
   worse than a decision filed under no agent. If the user never named a
   project or repo, omit both.
+- **`title`: the name the user sees in their sidebar, not one you compose.**
+  The user finds this run on the web by the name the app gave the chat
+  (e.g. "專案管理工具UI設計"), so a title you wrote yourself — however
+  accurate — reads as a different conversation. The app usually names the
+  chat without telling you, so:
+  - if that name is visible to you (the user said it, or it appears in your
+    context), copy it **verbatim**, same language, no rewording;
+  - otherwise ask once, before calling `capture`: 「這段對話在側欄上的名稱是？
+    (直接 Enter 就用：<your short suggestion>)」 and use the answer as-is;
+  - if nobody is there to answer, omit `title` rather than invent one.
+  Your own description of the topic belongs in the DAF, not here.
 - **`tools`: names and a short summary, never parameters.** Record that you
   ran `Edit`, not what you passed to it. Never reconstruct arguments from
   memory: invented parameters read as fact downstream. A bare string is fine
