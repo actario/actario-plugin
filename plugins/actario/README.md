@@ -1,23 +1,27 @@
 # Actario
 
 Capture your AI conversations into Actario: redacted on your own machine,
-distilled into decisions, facts and open questions, and held as **pending**
-until you confirm them.
+uploaded as a faithful record, and summarised topic by topic by your own
+agent.
 
 ## What you get
 
 - **A skill** — say "save this conversation to Actario" in any chat and Claude
-  writes a faithful record, uploads it, then distils it into entries anchored
-  to the turns they came from.
+  writes a faithful record, uploads it, then cuts it into topic segments —
+  each with a short summary anchored to the turns it covers — and writes it
+  up as a **note page**, like a Confluence page: editable on the web,
+  exportable as Markdown, every section linked back to the conversation.
+  Both are written by your own agent, on your own subscription, from the
+  redacted record.
 - **Six tools**, served by a program on your own machine:
 
   | tool | what it does |
   |---|---|
-  | `link` | point this machine at your workspace (once) |
+  | `link` | sign in and link this machine to your workspace (once) |
   | `capture` | scan, redact, score, pack, upload |
   | `list_runs` | what is in a captured batch — no content |
   | `read_run` | one conversation's turns |
-  | `submit_daf` | validate an analysis and file it as pending |
+  | `submit_daf` | validate the topic summaries and note page, redact them, upload them |
   | `doctor` | which sources this machine has, and whether they parse |
 
 ## Why it runs on your machine
@@ -37,7 +41,7 @@ otherwise see your files or reach your API.
   `npx -y @actario/cli mcp`; with no Node the plugin installs cleanly and then
   has no tools, which looks like a broken plugin rather than a missing
   runtime. Check with `node --version`.
-- **A workspace and a capture token**, from the web app's Settings page.
+- **An Actario account.** Linking signs you in through the browser; no token to copy.
 
 Nothing else. The CLI is fetched from npm on first run; there is no checkout
 to clone and no path to configure.
@@ -45,9 +49,10 @@ to clone and no path to configure.
 ## Setup
 
 1. Install the plugin.
-2. In any chat: **"link my machine to Actario"**, and give the API URL and
-   token when asked. This validates the token before writing anything, and
-   registers this machine as a source under its hostname.
+2. In any chat: **"link my machine to Actario"**. A browser tab opens: sign in,
+   check the code, pick a workspace, approve. On a machine without a browser
+   Claude shows a URL and a code to approve from any device. The machine is
+   registered as a source under its hostname.
 3. Check it: **"run Actario's doctor"**.
 
 If the tools do not appear straight away, the MCP server is announced but not
