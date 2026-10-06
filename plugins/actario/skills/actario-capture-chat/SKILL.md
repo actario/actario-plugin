@@ -1,15 +1,16 @@
 ---
 name: actario-capture-chat
-description: "Capture the conversation you are in right now into Actario, then summarise it into topic segments and write it up as a note page (like a Confluence page) shown next to it on the web. Use when asked to save, capture, export, distil, analyse, write up, or hand off this conversation to Actario or to another agent, or to turn it into notes."
+description: "Capture the conversation you are in right now into Actario, then summarise it into topic segments and write it up as a note page — a progress summary of the whole session, with step-by-step debugging condensed to what was done and how far it got — shown next to it on the web. Use when asked to save, capture, export, distil, analyse, write up, or hand off this conversation to Actario or to another agent, or to turn it into notes."
 ---
 
 # Capture this conversation into Actario
 
 Write a faithful record of the conversation you are in, hand it to the
 `actario` MCP server, and — separately — summarise it into topic segments
-and write it up as a **note page**: a wiki-style document the web shows at
-`/runs/<id>/note`, editable there, exportable as Markdown, every section
-linked back to the turns it is about.
+and write it up as a **note page**: a progress summary of the whole session —
+the goal, what was done stage by stage, where it stopped, what is left — that
+the web shows at `/runs/<id>/note`, editable there, exportable as Markdown,
+every section linked back to the turns it is about.
 
 You produce **two things, and they stay two things**:
 
@@ -178,10 +179,14 @@ One DAF with two kinds of content:
 - **`segments`**: each run cut where the subject changes, and for each piece a
   short topic and a few sentences on where that part of the conversation got
   to.
-- **`pages`**: for each run, **one note page** — title, a summary panel, and
-  sections (background, one per topic, where it ended, open questions, files
-  and commands), each anchored to a turn range. Written from the same
-  `read_run` text as the segments, in the same language.
+- **`pages`**: for each run, **one note page** — a progress summary of the
+  whole run that always answers five things: what the conversation set out
+  to do, what each part was doing, what was achieved, what may be unfinished,
+  and an overall summary of what is done and what is still to do. Sections:
+  goal, one per work stage (status, doing, achieved, not done yet), summary
+  (status table, done, to do), outputs — each anchored to a turn range. Debugging, exploration and retries are condensed to their
+  outcome, not retold. Written from the same `read_run` text as the segments,
+  in the same language.
 
 That is the whole analysis.
 
@@ -240,16 +245,21 @@ analysis is of the bundle you just made and not an older one.
    `references/note-page.md`: one `pages[]` item per run, `run_hash` copied
    from `read_run`, every section with a real `(start_turn_idx,
    end_turn_idx)`. Write it **only from what `read_run` returned** — that
-   text is already redacted; your memory of the conversation is not. Use
-   your segments as the outline: usually one section per segment, plus
-   background, where it ended, and open questions. The language rule above
+   text is already redacted; your memory of the conversation is not. Do **not**
+   reuse the segments as the outline: group the run into work stages by
+   outcome (usually 1–5), and give every stage its status and the three
+   labelled parts (在做什麼／做成了／還沒完成), then the 總結 section with the
+   status table, 已完成 and 待完成 — *The five things every page must answer*
+   in that file. Condense step-by-step debugging, exploration and tool
+   hiccups to one line of outcome each (*Condense*). The language rule above
    applies to the page too: title, headings and bodies in the language the
    user wrote in.
 6. **Fill `analyzer`.** `kind: "agent_session"`, `model` if you know it,
    `skill_version` = this plugin's version, `produced_at` = now, and
-   **`prompt_version: "client-notes@2026-10-04"`** — always set it yourself;
-   an older CLI's template names a retired rubric. (This is the
-   `client-segments@2026-10-04` rubric plus the note page.)
+   **`prompt_version: "client-notes@2026-10-06"`** — always set it yourself;
+   the CLI's template may name an older rubric. (This is the
+   `client-segments@2026-10-04` segment rubric plus the progress-summary
+   note page.)
 7. **Check the language, then submit.** Re-read each `topic`, `summary` and
    the note page against its run: a Chinese conversation with English
    summaries is wrong — rewrite those before sending. `submit_daf` checks
@@ -301,8 +311,8 @@ Output these, in the user's language:
    shortly, instead of giving N.
 2. What the DAF stage did, one line per segment: 「turns a–b：<topic>」.
    At most 8 lines; past that, list the first 8 and add 「…另 N 段」.
-3. A 2–4 sentence summary of what this conversation was doing and what it was
-   for, drawn from your segment summaries. Anything not settled is described
+3. A 2–4 sentence summary of what this conversation was doing and how far it
+   got, drawn from the note page's summary panel. Anything not settled is described
    as still open.
 
 Ignore the `note` field `submit_daf` returns (it talks about pending items and

@@ -9,7 +9,9 @@ agent.
 - **A skill** — say "save this conversation to Actario" in any chat and Claude
   writes a faithful record, uploads it, then cuts it into topic segments —
   each with a short summary anchored to the turns it covers — and writes it
-  up as a **note page**, like a Confluence page: editable on the web,
+  up as a **note page**: a progress summary of the whole session (goal, what
+  was done stage by stage, where it stopped, what is left), with debugging
+  and trial-and-error condensed to their outcome. Editable on the web,
   exportable as Markdown, every section linked back to the conversation.
   Both are written by your own agent, on your own subscription, from the
   redacted record.

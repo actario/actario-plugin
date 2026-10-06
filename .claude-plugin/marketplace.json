@@ -10,7 +10,7 @@
       "displayName": "Actario",
       "source": "./plugins/actario",
       "description": "Capture your AI conversations into Actario: redacted on your own machine, uploaded with a topic-by-topic summary written by your own agent.",
-      "version": "0.1.5",
+      "version": "0.1.6",
       "author": {
         "name": "Jacky Li"
       },
