@@ -9,8 +9,8 @@
       "name": "actario",
       "displayName": "Actario",
       "source": "./plugins/actario",
-      "description": "Capture your AI conversations into Actario: redacted on your own machine, uploaded with a topic-by-topic summary written by your own agent.",
-      "version": "0.1.6",
+      "description": "Capture your AI conversations into Actario — redacted on your own machine, summarised by your own agent — and bring them back: restore a conversation into a new chat, or build a memory from several.",
+      "version": "0.1.7",
       "author": {
         "name": "Jacky Li"
       },
@@ -24,7 +24,9 @@
         "redaction",
         "memory",
         "handoff",
-        "mcp"
+        "mcp",
+        "restore",
+        "resume"
       ],
       "category": "productivity"
     }

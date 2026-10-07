@@ -93,10 +93,32 @@ field out costs no quality points, so omit anything you do not actually know.
 Field rules, in order of how badly getting them wrong hurts:
 
 - **`project` / `repo_path`: only when explicitly known.** These bind the
-  record to an agent identity. A conversation id is not a project and a
-  guessed path is worse than none — a decision filed under the wrong agent is
-  worse than a decision filed under no agent. If the user never named a
-  project or repo, omit both.
+  record to an agent identity — the *line* the run is listed under on the
+  Agents page. A run without either is stored but **unbound**: it shows only
+  under `/runs?unbound=1`, never on the Agents page, and re-capturing it later
+  with the field added does not move it (the server deduplicates on content,
+  which does not include `project`). So get it right the first time.
+  A conversation id is not a project and a guessed path is worse than none —
+  a run filed under the wrong agent is worse than one filed under no agent.
+  These count as explicitly known, in this order:
+  1. The user named the project or repo in this conversation.
+  2. **The session is attached to a project** — a Cowork / claude.ai
+     Project whose name your context states (e.g. "This session is attached
+     to the Project **Distill**"). Use that name as `project`, **verbatim**
+     — same spelling and case, because the server binds by exact match and
+     `Distill` and `distill` are two different lines. This is the usual case
+     in Cowork; do not skip it because the user did not repeat the name.
+  3. **This conversation restored an earlier run** (`actario-restore` or
+     `actario-memory` ran here) whose line is named `<X> conversations`.
+     That line was created from `project: "<X>"`, so `<X>` is the value that
+     keeps the continuation on the same line — but it is a strong hint, not
+     a fact: confirm it in the same single question as the title and date
+     (below), e.g. 「要歸到 <X> 這條 line 嗎？」. If 2 also applies and the
+     names differ, ask which one.
+  A real `cwd` or repo path the session actually worked in may go into
+  `repo_path`; never a path you assume. If none of the above applies, omit
+  both — and say in Part 3 that the run is unbound, so the user knows why it
+  is not on the Agents page.
 - **`title`: the name the user sees in their sidebar, not one you compose.**
   The user finds this run on the web by the name the app gave the chat
   (e.g. "專案管理工具UI設計"), so a title you wrote yourself — however
@@ -105,7 +127,7 @@ Field rules, in order of how badly getting them wrong hurts:
   - if that name is visible to you (the user said it, or it appears in your
     context), copy it **verbatim**, same language, no rewording;
   - otherwise ask once, before calling `capture` (together with the date,
-    below): 「這段對話在側欄上的名稱是？(直接 Enter 就用：<your short
+    below, and the line from rule 3 of `project` if it applies): 「這段對話在側欄上的名稱是？(直接 Enter 就用：<your short
     suggestion>)」 and use the answer as-is;
   - if nobody is there to answer, omit `title` rather than invent one.
   Your own description of the topic belongs in the DAF, not here.
@@ -325,6 +347,9 @@ Add one extra line only when one of these is true:
 - redactions > 0 → say how many, and that a credential may have been in the
   conversation and should be rotated.
 - segments were dropped for unresolvable anchors → say how many.
+- the record went up with neither `project` nor `repo_path` → say the run is
+  not on any line, so it will not appear on the Agents page (only under
+  `/runs?unbound=1`), and that recapturing will not move it.
 - a page came back `current: false` → say the note page had been edited on
   the web, so this write-up was saved as a draft version and their edits were
   kept.
