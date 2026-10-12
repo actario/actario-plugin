@@ -1,6 +1,6 @@
 ---
 name: actario-restore
-description: "Bring an earlier conversation that was saved to Actario back into this one, so the work can continue where it stopped: find the run, download it to this machine, and load its memory (note page + segments), an index and the latest turns — reading any stretch of the original on demand. Use when asked to restore, resume, continue, pick up, reopen or recall an earlier conversation, session or run from Actario, or when given an Actario run link or share link (…/s/<token>)."
+description: "Bring an earlier conversation that was saved to Actario back into this one, so the work can continue where it stopped: find the run, download it to this machine, and load its memory (note page + segments), an index and the latest turns — reading any stretch of the original on demand. Use when asked to restore, resume, continue, pick up, reopen or recall an earlier conversation, session or run from Actario, or when given an Actario run link or share link (a link with /s/ in it)."
 ---
 
 # Bring a conversation back from Actario
