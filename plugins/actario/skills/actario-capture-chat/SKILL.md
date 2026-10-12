@@ -48,6 +48,41 @@ account in the browser.
 Only if the user pastes a capture token themselves, pass it as `token`. Never
 guess a token, and never ask for one when browser sign-in works.
 
+## The pass: this Claude account must be bound to Actario
+
+Every tool of the `actario` server except `link`, `link_status` and `doctor`
+takes a `pass`. Get it first, once per conversation: call `local_pass` on the
+**Actario connector** (the remote `actario-account` server) and give its
+`pass` value to every call. Do not show it to the user, put it in a record,
+or write it anywhere.
+
+- **No Actario connector in this session**: this Claude account has not been
+  bound to Actario yet. The plugin brings the connector with it (a server
+  named `actario-account`), so there is no URL to type: tell the user, in
+  their language, to open the connector list (Cowork / Claude desktop: the
+  connectors menu in the chat box, or Settings → Connectors; Claude Code:
+  `/mcp`), find **actario-account**, press **Connect** (Claude Code:
+  **Authenticate**), sign in to Actario and approve. That is done once per AI
+  account, not per conversation. Only if it is not in the list (claude.ai in
+  a browser, or a client that does not load plugin connectors) do they add it
+  by hand, as a custom connector with the URL `<server>/api/mcp` — the
+  `pass_required` error carries the exact URL. Stop there; once connected, a
+  new chat (or a refreshed tool list) picks up its tools.
+- **`pass_invalid`**: get a new pass from `local_pass` and retry once. If it
+  fails again, the connector and this computer are bound to different
+  Actario accounts or workspaces — say which (the connector's `whoami`, this
+  machine's `doctor`) and stop.
+- **`shared_machine`** (from `capture` without `record`): this computer is
+  linked to more than one Actario account, so its session folders are not
+  one person's. Capture this conversation with `record` — the normal path.
+- **A different person on the same computer.** One computer can be linked to
+  several Actario accounts; each gets a home of its own, and the pass decides
+  which one a call uses, so each person's work goes to their own workspace.
+  If `pass_invalid` says this machine is not linked to the account of this
+  conversation's Claude account, ask the user whether they are someone other
+  than the person linked here; if so, `link` (no arguments, browser sign-in
+  as them) adds their home and leaves the others' untouched.
+
 ## Part 1 — the record
 
 ### The one rule that matters most: report, do not clean

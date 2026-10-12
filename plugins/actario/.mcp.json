@@ -4,9 +4,13 @@
       "command": "npx",
       "args": [
         "-y",
-        "@actario/cli",
+        "@actario/cli@^0.2.0",
         "mcp"
       ]
+    },
+    "actario-account": {
+      "type": "http",
+      "url": "https://actario.app/api/mcp"
     }
   }
 }

@@ -1,0 +1,16 @@
+{
+  "description": "Actario agent messages: at the start of a session, one line with how many unread messages your other agents sent (counts only, never their contents).",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx -y @actario/cli@^0.2.0 agent peek --hook session",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}
