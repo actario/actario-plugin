@@ -50,13 +50,26 @@ guess a token, and never ask for one when browser sign-in works.
 
 ## The pass: this Claude account must be bound to Actario
 
-Every tool of the `actario` server except `link`, `link_status` and `doctor`
-takes a `pass`. Get it first, once per conversation: call `local_pass` on the
+Every tool of the `actario` server except `link`, `link_status`, `doctor` and
+`set_local_key` takes a `pass`. Get it first, once per conversation: call `local_pass` on the
 **Actario connector** (the remote `actario-account` server) and give its
 `pass` value to every call. Do not show it to the user, put it in a record,
 or write it anywhere.
 
-- **No Actario connector in this session**: this Claude account has not been
+- **No Actario connector in this session — try a local key first.** Some
+  accounts are allowed local keys: a key saved on this computer opens the
+  plugin without the connector. Call the tool once **without** `pass`. If it
+  answers normally, carry on without `pass` for the rest of the conversation.
+  If it answers `pass_required`, no local key is saved here — go on to the
+  next point. If it answers `local_key_invalid`, the saved key no longer
+  works (revoked, or the account was taken off the allowlist): say so in one
+  line, then go on to the next point.
+- **The user pastes a local key** (`actario_lkey_…`) and asks you to save it:
+  call `set_local_key` with it exactly as pasted, then carry on without
+  `pass`. Never save a key the user did not give you in this conversation,
+  never repeat it back, and do not bring local keys up with a user who has
+  not — they exist only for accounts a platform admin allowed.
+- **No Actario connector in this session** (and no local key): this Claude account has not been
   bound to Actario yet. The plugin brings the connector with it (a server
   named `actario-account`), so there is no URL to type: tell the user, in
   their language, to open the connector list (Cowork / Claude desktop: the
@@ -239,9 +252,10 @@ One DAF with two kinds of content:
 - **`pages`**: for each run, **one note page** — a progress summary of the
   whole run that always answers five things: what the conversation set out
   to do, what each part was doing, what was achieved, what may be unfinished,
-  and an overall summary of what is done and what is still to do. Sections:
-  goal, one per work stage (status, doing, achieved, not done yet), summary
-  (status table, done, to do), outputs — each anchored to a turn range. Debugging, exploration and retries are condensed to their
+  and an overall summary of what is done and what is still to do. Sections,
+  conclusion first: summary (stopped at, done, to do, status table), goal,
+  one per work stage (status, one line, doing, achieved, not done yet,
+  details), outputs — each anchored to a turn range. Debugging, exploration and retries are condensed to their
   outcome, not retold. Written from the same `read_run` text as the segments,
   in the same language.
 
@@ -304,19 +318,23 @@ analysis is of the bundle you just made and not an older one.
    end_turn_idx)`. Write it **only from what `read_run` returned** — that
    text is already redacted; your memory of the conversation is not. Do **not**
    reuse the segments as the outline: group the run into work stages by
-   outcome (usually 1–5), and give every stage its status and the three
-   labelled parts (在做什麼／做成了／還沒完成), then the 總結 section with the
-   status table, 已完成 and 待完成 — *The five things every page must answer*
-   in that file. Condense step-by-step debugging, exploration and tool
+   outcome (usually 1–5). **Conclusion first:** the 總結 section (停在,
+   已完成, 待完成, status table) is the first section and `summary` opens
+   with how far the work got. Every stage has its status, a **一句話** line
+   (L1, ≤ 30 字), the labelled parts 在做什麼／做成了／還沒完成 as short
+   bullets (L2) that each end with the turns that show them, `(#12–18)`, and
+   anything longer under **細節** (L3, folded on the web) —
+   *Read in three layers* and *The five things every page must answer* in
+   that file. Condense step-by-step debugging, exploration and tool
    hiccups to one line of outcome each (*Condense*). The language rule above
    applies to the page too: title, headings and bodies in the language the
    user wrote in.
 6. **Fill `analyzer`.** `kind: "agent_session"`, `model` if you know it,
    `skill_version` = this plugin's version, `produced_at` = now, and
-   **`prompt_version: "client-notes@2026-10-06"`** — always set it yourself;
+   **`prompt_version: "client-notes@2026-10-14"`** — always set it yourself;
    the CLI's template may name an older rubric. (This is the
    `client-segments@2026-10-04` segment rubric plus the progress-summary
-   note page.)
+   note page, conclusion first, in three layers.)
 7. **Check the language, then submit.** Re-read each `topic`, `summary` and
    the note page against its run: a Chinese conversation with English
    summaries is wrong — rewrite those before sending. `submit_daf` checks

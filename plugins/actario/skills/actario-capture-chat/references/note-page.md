@@ -7,18 +7,35 @@ as Markdown. Every section links back to the turns it is about.
 
 You write it here, on the user's own subscription, after the segments.
 
+## Read in three layers, conclusion first
+
+People open the page to learn **where the work ended up**, and only then
+how. So the page leads with the conclusion and lets the reader go deeper one
+layer at a time. The web splits every stage on its labels and shows:
+
+| Layer | What it is | Where the web shows it |
+|---|---|---|
+| **L1** | One line per stage: **一句話 / In one line**, ≤ 30 字 (≈ 75 characters in English) | The stage list under the conclusion, next to the stage's status and turns |
+| **L2** | **在做什麼／做成了／還沒完成** — short bullets | The side panel when the reader picks that stage |
+| **L3** | **細節 / Details** — the one-line debug records, files, commands | Folded under "More details" in that panel |
+
+Think of a stage as a **chapter of a video**: the heading is the chapter
+title, L1 is what you would learn from that chapter in one sentence, L2 is
+the three or four things worth remembering, and L3 is for the person who
+wants to rewatch it.
+
 ## The five things every page must answer
 
-The user reads the page for these five answers, in this order. Each one has
-a fixed place, so every page can be read the same way:
+Every page answers these five things. Each one has a fixed place, so every
+page can be read the same way — and the overall answer (#5) comes first:
 
 | # | The page must say | Where it goes |
 |---|---|---|
-| 1 | What this conversation as a whole set out to do | The first sentence of `summary`, and the **目標 / Goal** section |
+| 1 | What this conversation as a whole set out to do | The **目標 / Goal** section, and the second sentence of `summary` |
 | 2 | What each part of it was doing | Each work-stage section: the **在做什麼 / Doing** line |
 | 3 | What was achieved | Each work-stage section: **做成了 / Achieved** |
 | 4 | What may still be unfinished | Each work-stage section: **還沒完成 / Not done yet** |
-| 5 | Overall: what is done, what is still to do | The **總結 / Summary** section: the status table, **已完成 / Done**, **待完成 / To do** |
+| 5 | Overall: what is done, what is still to do | The first sentence of `summary`, and the **總結 / Summary** section — the **first** section of the page: **停在**, **已完成 / Done**, **待完成 / To do**, the status table |
 
 None of the five may be missing. If a stage really has nothing unfinished,
 say so ("無" / "Nothing"), so the reader knows you looked.
@@ -80,17 +97,18 @@ to draw the progress chart.
 
 **`title`** — what the session was working on, as a page title.
 
-**`summary`** — the panel at the top, 2–4 sentences: (1) what the whole
-conversation set out to do, (2) how far it got, (3) the most important thing
-still to do.
+**`summary`** — the panel at the top, 2–4 sentences, **conclusion first**:
+(1) how far the work got — the result, in plain words, (2) what the whole
+conversation set out to do, (3) the most important thing still to do.
+Someone who reads only this sentence should know whether the work is done.
 
 **`sections`**, in this order:
 
 | Section (繁中 / English) | Required | Range |
 |---|---|---|
+| 總結 / Summary (below) — **first**, so the conclusion leads | yes | The last stretch of the run |
 | 目標 / Goal — what the user set out to do and the starting state, two or three sentences | yes | Turns where the goal was set |
 | One section per **work stage** (below) | yes, ≥ 1 | First to last turn of that stage |
-| 總結 / Summary (below) | yes | The last stretch of the run |
 | 產出 / Outputs — final files, commits, versions, URLs the run produced (the final ones, not every intermediate) | only if there are any | Turns where they were produced |
 
 ### Work stages
@@ -105,19 +123,43 @@ belongs to that stage, not to a stage of its own.
   you are narrating, not summarising — merge.
 - **Heading:** what the stage did, as a short phrase ("修正上傳逾時",
   "Shipped the release"). No "Stage 1:" prefix.
-- **Body**, exactly these four parts, in this order:
+- **Body**, these parts in this order (the last one only when there is
+  something for it):
 
   ```
   **<status>**
-  **在做什麼：** one sentence — what this part of the conversation was doing
+  **一句話：** L1 — the stage's result in ≤ 30 字
+  **在做什麼：** one short sentence — what this part of the conversation was doing
   **做成了：**
   - what was achieved, with how it was verified if it was
   **還沒完成：**
   - what is still open in this stage — or 「無」
+  **細節：**
+  - one-line records: symptom → cause → change → verified?; files; commands
   ```
 
-  English: `**<status>**`, `**Doing:**`, `**Achieved:**`, `**Not done yet:**`
-  (or "Nothing").
+  English: `**<status>**`, `**In one line:**`, `**Doing:**`, `**Achieved:**`,
+  `**Not done yet:**` (or "Nothing"), `**Details:**`.
+
+- **How to write L1 and L2** — simple enough for someone who was not there:
+  - **一句話** says the *result*, not the activity: 「大檔上傳逾時已修好並驗證」,
+    not 「處理上傳問題」.
+  - **做成了／還沒完成** are bullets only, **2–5 points in total** for the
+    stage, each **≤ 25 字** (≈ 60 characters), starting with a verb or the
+    thing that changed: 「改成 8 MB 分段上傳」「marketplace 還沒 push」.
+  - **Every 做成了／還沒完成 point ends with the turns that show it**:
+    `(#12)` for one turn, `(#12–18)` for a stretch — real `idx` values from
+    `read_run`, the turns where that result appears or that open question
+    was left. The web turns each one into a button that shows those turns
+    next to the note, so a reader can check any point against the
+    conversation. Keep the stretch short: the turns that show *this* point,
+    not the whole stage. 「無」 and 一句話 carry none. Points in 總結's
+    已完成／待完成 may carry one too.
+  - Plain words. A term the reader may not know gets a few words of
+    explanation the first time, or goes to 細節.
+  - Anything longer — the debug record, the file list, the command to re-run,
+    the reason an approach was dropped — goes under **細節**, which the web
+    keeps folded. 細節 is optional: leave it out when there is nothing to add.
 
 - **Status**, from this list only:
   **完成** / **完成（未驗證）** / **進行中** / **未開始** / **擱置** / **放棄**
@@ -129,9 +171,18 @@ belongs to that stage, not to a stage of its own.
 
 ### 總結 / Summary
 
-The overall answer to #5. Exactly these parts, in this order:
+The overall answer to #5, and the **first section** of the page. Exactly
+these parts, in this order:
 
-1. A status table of every stage — this is the page's chart in text form:
+1. One line: **停在 / Stopped at:** where the run stopped.
+2. **已完成 / Done** — a short list of what the whole conversation achieved,
+   one line each, in the same plain words as L2.
+3. **待完成 / To do** — a list of everything still open across the whole
+   run: each stage's 還沒完成, anything unverified, next steps stated in the
+   run, things the user said they would do themselves. Mark next steps only
+   you proposed as "（提議）". If nothing is left, write 「無」.
+4. A status table of every stage — the page's chart in text form, for
+   whoever reads the exported Markdown:
 
    ```
    | 階段 | 狀態 |
@@ -139,13 +190,6 @@ The overall answer to #5. Exactly these parts, in this order:
    | 修正上傳逾時 | 完成 |
    | 發布 2.3.0 | 進行中 |
    ```
-
-2. One line: **停在 / Stopped at:** where the run stopped.
-3. **已完成 / Done** — a list of what the whole conversation achieved.
-4. **待完成 / To do** — a list of everything still open across the whole
-   run: each stage's 還沒完成, anything unverified, next steps stated in the
-   run, things the user said they would do themselves. Mark next steps only
-   you proposed as "（提議）". If nothing is left, write 「無」.
 
 The web draws a progress chart from the stage statuses and turn ranges, so
 a wrong status or range draws a wrong chart.
@@ -155,16 +199,16 @@ a wrong status or range draws a wrong chart.
 ```jsonc
 {
   "title": "上傳逾時修正與 2.3.0 發布",
-  "summary": "這段對話要修好大檔上傳逾時並發布 2.3.0。逾時已修好並驗證，2.3.0 已發布到 npm。還沒完成的是 marketplace 更新，以及 Windows 上的打包方式。",
+  "summary": "大檔上傳逾時已修好並驗證，2.3.0 已發布到 npm。這段對話要修好逾時並發布 2.3.0。還沒完成的是 marketplace 更新，以及 Windows 上的打包方式。",
   "sections": [
+    { "heading": "總結", "start_turn_idx": 40, "end_turn_idx": 44,
+      "body": "**停在：** marketplace push 之前。\n\n**已完成**\n- 大檔上傳逾時修好（分段上傳，已驗證）\n- npm 發布 2.3.0\n\n**待完成**\n- marketplace 更新到 2.3.0\n- 決定 Windows 上的打包方式\n\n| 階段 | 狀態 |\n|---|---|\n| 修正上傳逾時 | 完成 |\n| 發布 2.3.0 | 進行中 |" },
     { "heading": "目標", "start_turn_idx": 0, "end_turn_idx": 1,
       "body": "超過 50 MB 的 bundle 上傳會逾時；要修好後發布 2.3.0。" },
     { "heading": "修正上傳逾時", "start_turn_idx": 2, "end_turn_idx": 31,
-      "body": "**完成**\n**在做什麼：** 找出大檔上傳逾時的原因並修正。\n**做成了：**\n- 單次上傳超過 proxy 上限 → 改成 8 MB 分段上傳，120 MB 測試檔上傳成功\n- 拉長 timeout 行不通（proxy 端不能調）\n**還沒完成：**\n- 無" },
+      "body": "**完成**\n**一句話：** 大檔上傳逾時已修好並驗證\n**在做什麼：** 找出大檔上傳逾時的原因並修正。\n**做成了：**\n- 改成 8 MB 分段上傳 (#18–24)\n- 120 MB 測試檔上傳成功 (#29–31)\n**還沒完成：**\n- 無\n**細節：**\n- 單次上傳超過 proxy 上限 → 分段上傳 → 已驗證\n- 拉長 timeout 行不通：proxy 端不能調\n- `src/upload/chunked.ts`" },
     { "heading": "發布 2.3.0", "start_turn_idx": 32, "end_turn_idx": 44,
-      "body": "**進行中**\n**在做什麼：** 把修正發布成 2.3.0。\n**做成了：**\n- npm 已發布 `2.3.0`\n**還沒完成：**\n- marketplace 還沒 push\n- Windows 沒有 `zip`，打包在 VM 做還是另裝 zip，未決定" },
-    { "heading": "總結", "start_turn_idx": 40, "end_turn_idx": 44,
-      "body": "| 階段 | 狀態 |\n|---|---|\n| 修正上傳逾時 | 完成 |\n| 發布 2.3.0 | 進行中 |\n\n**停在：** marketplace push 之前。\n\n**已完成**\n- 大檔上傳逾時修好（分段上傳，已驗證）\n- npm 發布 2.3.0\n\n**待完成**\n- marketplace 更新到 2.3.0\n- 決定 Windows 上的打包方式" },
+      "body": "**進行中**\n**一句話：** npm 已發布，marketplace 還沒更新\n**在做什麼：** 把修正發布成 2.3.0。\n**做成了：**\n- npm 發布 `2.3.0` (#38–40)\n**還沒完成：**\n- marketplace 還沒 push (#44)\n- Windows 打包方式未決定 (#41–43)\n**細節：**\n- Windows 沒有 `zip`：在 VM 打包，或另裝 zip" },
     { "heading": "產出", "start_turn_idx": 25, "end_turn_idx": 36,
       "body": "- `src/upload/chunked.ts`\n- commit `a1b2c3d`\n- `@example/cli@2.3.0`" }
   ]
@@ -178,8 +222,8 @@ the log output, the permission prompts, the order things were typed in.
 
 The whole page should read in about two minutes, and **a short conversation
 gets a short page**: if your page is longer than the conversation it
-summarises, cut it. A stage body over ~10 lines, or a page over ~8 sections,
-is a sign the process crept back in.
+summarises, cut it. L1 and L2 of a stage over ~10 lines, 細節 over ~6 lines,
+or a page over ~8 sections, is a sign the process crept back in.
 
 ## Shape and limits
 

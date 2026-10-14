@@ -79,8 +79,9 @@ mention it once, briefly, and offer to show them; do not open them unasked.
 
 Every tool takes a `pass`: call `local_pass` on the Actario connector once
 per conversation and pass it to every call (see `actario-share` for what to
-do when the connector is missing or the pass is refused). Sending, replying
-and changing a state need a connection that is allowed to capture.
+do when the connector is missing or the pass is refused, and for a local
+key: on a computer where the user saved one, leave `pass` out). Sending,
+replying and changing a state need a connection that is allowed to capture.
 
 ## Errors
 

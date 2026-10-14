@@ -9,9 +9,10 @@ agent.
 - **A skill** — say "save this conversation to Actario" in any chat and Claude
   writes a faithful record, uploads it, then cuts it into topic segments —
   each with a short summary anchored to the turns it covers — and writes it
-  up as a **note page**: a progress summary of the whole session (goal, what
-  was done stage by stage, where it stopped, what is left), with debugging
-  and trial-and-error condensed to their outcome. Editable on the web,
+  up as a **note page**: a progress summary of the whole session that leads
+  with the conclusion (where it stopped, what is done, what is left), then
+  each stage in one line, with its short bullet points and details a click
+  away; debugging and trial-and-error are condensed to their outcome. Editable on the web,
   exportable as Markdown, every section linked back to the conversation.
   Both are written by your own agent, on your own subscription, from the
   redacted record.
@@ -49,7 +50,12 @@ agent.
   a new session starts with one line saying how many messages are waiting
   (counts only). Preview: your own agents only; your organisation and
   friends come later.
-- **Twenty-five tools**, served by a program on your own machine:
+- **Search and slides** (0.2.5) — "which chat did we decide the autumn prices
+  in?" searches your note pages, summaries and conversations (never tool
+  output). "make a deck of the B1 work for my manager" has your agent write
+  the story and renders a .pptx on your machine (`~/.actario/decks/`); the
+  web's **Export PowerPoint** gives the note page as it is, for comparison.
+- **Twenty-eight tools**, served by a program on your own machine:
 
   | tool | what it does |
   |---|---|
@@ -59,7 +65,9 @@ agent.
   | `read_run` | one conversation's turns |
   | `submit_daf` | validate the topic summaries and note page, redact them, upload them |
   | `doctor` | which sources this machine has, and whether they parse |
-  | `find_runs` | search your uploaded conversations — no content |
+  | `find_runs` | find your uploaded conversations by title, line or date — no content |
+  | `search` | search note pages, summaries and conversation text — never tool output |
+  | `make_deck` | render a slide deck your agent wrote to a .pptx on this machine |
   | `fetch_run` | bring one back into this chat |
   | `read_restored` | read part of it (real values only on the machine that captured it, on request) |
   | `fetch_memory_sources` | download the conversations a memory is built from |
@@ -115,7 +123,7 @@ otherwise see your files or reach your API.
 ## Requirements
 
 - **Node 20 or newer on your PATH.** The MCP server is
-  `npx -y @actario/cli@^0.2.0 mcp`; with no Node the plugin installs cleanly and then
+  `npx -y @actario/cli@^0.2.3 mcp`; with no Node the plugin installs cleanly and then
   has no tools, which looks like a broken plugin rather than a missing
   runtime. Check with `node --version`.
 - **An Actario account.** Linking signs you in through the browser; no token to copy.
@@ -143,6 +151,13 @@ to clone and no path to configure.
    Where plugins do not reach (claude.ai in a browser), add it by hand as a
    custom connector with the URL `https://actario.app/api/mcp`
    (Settings → Connectors → Add custom connector).
+   **No way to add a connector?** (an organization that does not let members
+   add custom connectors, for instance.) If your Actario account has been
+   allowed *local keys*, make one under *Connected AI accounts* on the web
+   and save it on this computer — `actario key set` in a terminal, or paste it
+   into a chat and ask Claude to save your Actario local key. The plugin then
+   answers without the connector, for **any** AI account on this computer, so
+   make one per computer and revoke it on the web when you stop using it.
 4. Check it: **"run Actario's doctor"**.
 
 If the tools do not appear straight away, the MCP server is announced but not

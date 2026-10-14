@@ -37,13 +37,26 @@ On the `actario` MCP server (plugin 0.1.7, `@actario/cli` 0.1.4 or later):
 
 ## The pass: this Claude account must be bound to Actario
 
-Every tool of the `actario` server except `link`, `link_status` and `doctor`
-takes a `pass`. Get it first, once per conversation: call `local_pass` on the
+Every tool of the `actario` server except `link`, `link_status`, `doctor` and
+`set_local_key` takes a `pass`. Get it first, once per conversation: call `local_pass` on the
 **Actario connector** (the remote `actario-account` server) and give its
 `pass` value to every call. Do not show it to the user, put it in a record,
 or write it anywhere.
 
-- **No Actario connector in this session**: this Claude account has not been
+- **No Actario connector in this session — try a local key first.** Some
+  accounts are allowed local keys: a key saved on this computer opens the
+  plugin without the connector. Call the tool once **without** `pass`. If it
+  answers normally, carry on without `pass` for the rest of the conversation.
+  If it answers `pass_required`, no local key is saved here — go on to the
+  next point. If it answers `local_key_invalid`, the saved key no longer
+  works (revoked, or the account was taken off the allowlist): say so in one
+  line, then go on to the next point.
+- **The user pastes a local key** (`actario_lkey_…`) and asks you to save it:
+  call `set_local_key` with it exactly as pasted, then carry on without
+  `pass`. Never save a key the user did not give you in this conversation,
+  never repeat it back, and do not bring local keys up with a user who has
+  not — they exist only for accounts a platform admin allowed.
+- **No Actario connector in this session** (and no local key): this Claude account has not been
   bound to Actario yet. The plugin brings the connector with it (a server
   named `actario-account`), so there is no URL to type: tell the user, in
   their language, to open the connector list (Cowork / Claude desktop: the

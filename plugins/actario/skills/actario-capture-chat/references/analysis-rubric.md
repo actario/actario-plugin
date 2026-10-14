@@ -8,7 +8,7 @@ on the Agents page and the page at `/runs/<id>/note`.
 This file covers segments and the shape of the whole DAF. How to write the
 page itself is in `note-page.md` — read it before writing `pages`.
 
-Rubric version: `client-notes@2026-10-06`. Put it in
+Rubric version: `client-notes@2026-10-14`. Put it in
 `analyzer.prompt_version`. The CLI's template may name an older rubric, so
 always set it yourself. (It is `client-segments@2026-10-04` — segments with
 the Language rules below — plus the progress-summary note page.)
@@ -23,7 +23,7 @@ the Language rules below — plus the progress-summary note page.)
     "kind": "agent_session",
     "model": "<the model you are, if you know it>",
     "skill_version": "<this plugin's version>",
-    "prompt_version": "client-notes@2026-10-06",
+    "prompt_version": "client-notes@2026-10-14",
     "produced_at": "<ISO 8601 with offset>"
   },
   "segments": [
@@ -40,11 +40,11 @@ the Language rules below — plus the progress-summary note page.)
   "pages": [
     { "run_hash": "8f3a…c1", "title": "登入流程修正", "summary": "…", "labels": ["auth"],
       "sections": [
+        { "heading": "總結", "start_turn_idx": 15, "end_turn_idx": 19,
+          "body": "**停在：** …\n\n**已完成**\n- …\n\n**待完成**\n- …\n\n| 階段 | 狀態 |…" },
         { "heading": "目標", "start_turn_idx": 0, "end_turn_idx": 1, "body": "…" },
         { "heading": "修正登入後重導", "start_turn_idx": 2, "end_turn_idx": 9,
-          "body": "**完成**\n**在做什麼：** …\n**做成了：**\n- …\n**還沒完成：**\n- 無" },
-        { "heading": "總結", "start_turn_idx": 15, "end_turn_idx": 19,
-          "body": "| 階段 | 狀態 |…\n\n**停在：** …\n\n**已完成**\n- …\n\n**待完成**\n- …" }
+          "body": "**完成**\n**一句話：** …\n**在做什麼：** …\n**做成了：**\n- … (#4–6)\n**還沒完成：**\n- 無\n**細節：**\n- …" }
       ] }
   ]
 }
