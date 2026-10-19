@@ -3,15 +3,16 @@
 You are reading captured runs and writing one JSON file of **topic
 segments** and, for each run, one **note page**. The server validates it,
 discards what it cannot verify, and shows the segments as the run's Summary
-on the Agents page and the page at `/runs/<id>/note`.
+on the Acta page and the page at `/runs/<id>/note`.
 
 This file covers segments and the shape of the whole DAF. How to write the
 page itself is in `note-page.md` — read it before writing `pages`.
 
-Rubric version: `client-notes@2026-10-14`. Put it in
+Rubric version: `client-notes@2026-10-19`. Put it in
 `analyzer.prompt_version`. The CLI's template may name an older rubric, so
 always set it yourself. (It is `client-segments@2026-10-04` — segments with
-the Language rules below — plus the progress-summary note page.)
+the Language rules below — plus the progress-summary note page, plus
+`run_meta`: tags, facets and the line, rules in SKILL.md Part 2 step 6.)
 
 ## The shape
 
@@ -23,7 +24,7 @@ the Language rules below — plus the progress-summary note page.)
     "kind": "agent_session",
     "model": "<the model you are, if you know it>",
     "skill_version": "<this plugin's version>",
-    "prompt_version": "client-notes@2026-10-14",
+    "prompt_version": "client-notes@2026-10-19",
     "produced_at": "<ISO 8601 with offset>"
   },
   "segments": [
@@ -46,6 +47,10 @@ the Language rules below — plus the progress-summary note page.)
         { "heading": "修正登入後重導", "start_turn_idx": 2, "end_turn_idx": 9,
           "body": "**完成**\n**一句話：** …\n**在做什麼：** …\n**做成了：**\n- … (#4–6)\n**還沒完成：**\n- 無\n**細節：**\n- …" }
       ] }
+  ],
+  "run_meta": [
+    { "run_hash": "8f3a…c1", "tags": ["登入", "重導", "auth"],
+      "facets": { "category": "work", "task_type": "coding", "outputs": ["code"], "scope": "topic" } }
   ]
 }
 ```

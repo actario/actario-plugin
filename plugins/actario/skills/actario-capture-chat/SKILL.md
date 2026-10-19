@@ -119,7 +119,8 @@ credential redaction, quality scoring, packing, upload.
 {
   "format": "distill.chat/v1",            // required, exactly this
   "platform": "cowork",                   // or claude_code, claude_desktop
-  "title": "<the title the app shows for this chat — see the rule below>",
+  "conversation_id": "<this chat's id — see the rule below>",
+  "title": "<your recommended name for this chat — see the rule below>",
   "model": "<the model you are, if you know it>",
   "project": "<project name, only if explicitly known>",
   "repo_path": "<absolute repo path, only if explicitly known>",
@@ -142,10 +143,11 @@ Field rules, in order of how badly getting them wrong hurts:
 
 - **`project` / `repo_path`: only when explicitly known.** These bind the
   record to an agent identity — the *line* the run is listed under on the
-  Agents page. A run without either is stored but **unbound**: it shows only
-  under `/runs?unbound=1`, never on the Agents page, and re-capturing it later
-  with the field added does not move it (the server deduplicates on content,
-  which does not include `project`). So get it right the first time.
+  Acta page. A run without either is not lost: in Part 2 you tag it and pick
+  its line with `suggest_line`, and the server files it there (or, if nothing
+  fits, it stays **未分類 / unfiled** under `/runs?unbound=1`, where the user
+  can move it). Re-capturing it later with the field added does not move it
+  (the server deduplicates on content, which does not include `project`).
   A conversation id is not a project and a guessed path is worse than none —
   a run filed under the wrong agent is worse than one filed under no agent.
   These count as explicitly known, in this order:
@@ -160,25 +162,45 @@ Field rules, in order of how badly getting them wrong hurts:
      `actario-memory` ran here) whose line is named `<X> conversations`.
      That line was created from `project: "<X>"`, so `<X>` is the value that
      keeps the continuation on the same line — but it is a strong hint, not
-     a fact: confirm it in the same single question as the title and date
-     (below), e.g. 「要歸到 <X> 這條 line 嗎？」. If 2 also applies and the
-     names differ, ask which one.
+     a fact. Use it without asking; if 2 also applies and the names differ,
+     use 2 (the attached project). Part 3 says which line the run went to,
+     and the user can move it on the web.
   A real `cwd` or repo path the session actually worked in may go into
   `repo_path`; never a path you assume. If none of the above applies, omit
-  both — and say in Part 3 that the run is unbound, so the user knows why it
-  is not on the Agents page.
-- **`title`: the name the user sees in their sidebar, not one you compose.**
-  The user finds this run on the web by the name the app gave the chat
-  (e.g. "專案管理工具UI設計"), so a title you wrote yourself — however
-  accurate — reads as a different conversation. The app usually names the
-  chat without telling you, so:
-  - if that name is visible to you (the user said it, or it appears in your
-    context), copy it **verbatim**, same language, no rewording;
-  - otherwise ask once, before calling `capture` (together with the date,
-    below, and the line from rule 3 of `project` if it applies): 「這段對話在側欄上的名稱是？(直接 Enter 就用：<your short
-    suggestion>)」 and use the answer as-is;
-  - if nobody is there to answer, omit `title` rather than invent one.
-  Your own description of the topic belongs in the DAF, not here.
+  both — Part 2 files the run by its tags instead.
+- **`title`: always your recommended name — never ask the user for one.**
+  Write a short name for what this conversation is about (≤ 40 characters,
+  in the conversation's language, e.g. "PP11a B2 分組 LOSO 與 GP 超參數"),
+  the same name you would have suggested. Then:
+  - if the name the app shows for this chat is visible to you (the user said
+    it, or it appears in your context) and it differs from yours, append it
+    in parentheses, **verbatim**: `<your name> (<app name>)`;
+  - otherwise just your name — no parentheses, no placeholder.
+  Do **not** stop to ask for the sidebar name, not even with your name as the
+  default answer: the user decided (2026-10-19) that the recommended name is
+  always used. They can rename the run on the web.
+- **`conversation_id`: what makes a later capture of this same chat continue
+  the same run** instead of adding a second one (10/15 captured, 10/18
+  captured again → one run, with the new turns appended). It is hashed on
+  this machine; the id itself is never uploaded. Use, in this order:
+  1. the id of this chat if your context states one — e.g. a session link
+     such as `claude.ai/code/session_…` (use the `session_…` part);
+  2. the `conversation_id` an earlier `capture` call **in this same chat**
+     returned;
+  3. otherwise omit it. The server still recognises a continuation by the
+     user's own words, as long as you write the user turns verbatim.
+  **Never** take an id from another chat — not from a run `actario-restore`
+  or `actario-memory` brought in, not from a share link. A restored
+  conversation continued here is a new conversation on the same line.
+- **`continues_from`: only when the early part is gone from your context.**
+  If this chat was captured before (you can see that earlier `capture`
+  result, with its `conversation_id` and `turn_count`) and the turns before
+  it have since been compacted out of your context, do not rewrite them from
+  memory: put only the turns after that capture in `turns`, and set
+  `"continues_from": <that turn_count>` together with the same
+  `conversation_id`. The server appends them exactly there, or refuses the
+  record (`continues_mismatch`) if anything was added in between. When you
+  still have the whole conversation, send all of it and leave this out.
 - **`started_at` / `ended_at`: when the conversation happened, never when
   it was captured.** `ended_at` is the last turn *before* the capture request
   — the date the web shows as "last active". Omit both and the pipeline falls
@@ -188,9 +210,8 @@ Field rules, in order of how badly getting them wrong hurts:
     date notices that arrived later in the session, dates the user mentioned.
     A bare date (`"2026-09-07"`) is fine when that is all you know; do not
     invent a time of day.
-  - If you cannot tell when the earlier turns happened, put it in the same
-    single question as the title — 「側欄上的名稱是？這段對話最後一次活動是哪天？
-    (直接 Enter 就用：<title> / <date>)」 — and omit what is still unknown.
+  - If you cannot tell when the earlier turns happened, omit what you do not
+    know — do not ask. (Capture asks the user nothing before `capture`.)
   - Never use "now" for `ended_at` unless the conversation really ran up to
     the capture request.
 - **`tools`: names and a short summary, never parameters.** Record that you
@@ -230,7 +251,9 @@ Add `dry_run: true` first if the user wants to see the score before anything
 is uploaded; the record stays in the inbox either way and the next real
 capture includes it (the server deduplicates by content, so this is safe).
 
-A successful call returns `upload_id`, `bundle_id` and a `report`. Do not
+A successful call returns `upload_id`, `bundle_id` and a `report` — and, for
+a record, the `conversation_id` you sent and the `turn_count` it reached:
+keep them in mind for the next capture of this chat. Do not
 relay the report's numbers to the user — Part 3 says what they see. Do check
 the **redaction line**: if anything was redacted, Part 3 requires you to say
 so, because that is the user's signal that a credential was in the
@@ -267,6 +290,11 @@ That is the whole analysis.
   the segment summary instead, as something that happened.
 - **`agent_states` stays `[]`.** No "doing now" card for the line.
 
+And, per run, one **`run_meta`** item: a few short tags, four facets, and —
+for a run with no line — which line it belongs to (*Tag each run and pick
+its line*, below). The server uses them to file the run, to search and to
+group; the user sees them as chips under the title and can change them.
+
 Entries written by earlier versions of this skill are hidden on the web, not
 deleted, and a segments-only DAF never touches them: on re-analysis the server
 only replaces entries on runs where the new DAF carries entries, and this one
@@ -287,6 +315,18 @@ analysis is of the bundle you just made and not an older one.
    turn count, timestamps — and a `daf_template` with `bundle_id` and
    `analyzer` already filled in. No conversation content: you cannot
    summarise from it.
+   A run with a **`continuation`** is a conversation that was captured before;
+   the server appended this capture to the run it already had
+   (`mode: "append"`, `added_turns` new turns after turn `base_turns`) or,
+   when the text no longer lined up, stored it as a new version
+   (`mode: "replace"`). For such a run:
+   - `anchorable: false` → write **nothing** for it (no segments, no page):
+     its turn numbers do not match the stored run's, or (`mode: "dropped"`)
+     nothing landed. Say so in Part 3.
+   - `mode: "append"` → write segments **only for turns from `base_turns`
+     on** — the earlier segments are kept — and write the note page for the
+     **whole conversation so far**, not just the new part.
+   - `mode: "replace"` → treat it as a whole new run.
 2. **Read.** `read_run` every run you will summarise, all of it. A summary of
    turns you have not read is a guess, and it will be believed.
 3. **Cut.** Walk each run in order and start a new segment where the
@@ -329,18 +369,49 @@ analysis is of the bundle you just made and not an older one.
    hiccups to one line of outcome each (*Condense*). The language rule above
    applies to the page too: title, headings and bodies in the language the
    user wrote in.
-6. **Fill `analyzer`.** `kind: "agent_session"`, `model` if you know it,
+6. **Tag each run and pick its line** — one `run_meta[]` item per run:
+   ```jsonc
+   { "run_hash": "<from read_run>",
+     "tags": ["京都旅行", "行程", "預算"],          // 3–8
+     "facets": { "category": "life", "task_type": "planning", "outputs": ["doc"], "scope": "topic" },
+     "line_hint": { "agent_id": "<from suggest_line>" } }  // or { "new_name": "…" }, or omit
+   ```
+   - **`tags`**: what someone would type to find this conversation again.
+     Same language rule as the summaries; English lower-case. Short: at most
+     8 CJK characters or 3 words each. Never a person's name, an email, a
+     link, a key, or a pseudonym from the bundle (`USER-1A2B3C`); never empty
+     words (對話, 問題, chat, AI). Fewer good tags beat eight padded ones.
+   - **`facets`** (each optional; omit rather than guess): `category` one of
+     `daily · work · recurring · learning · creative · life · other` (日常記事、
+     工作紀要、定期工作、學習研究、創作寫作、生活規劃); `task_type` one of
+     `coding · writing · research · planning · analysis · learning · admin · chat`;
+     `outputs` any of `code · doc · slides · sheet · image · data · config · none`;
+     `scope` `topic` (work that will continue — a trip, a project, a course)
+     or `oneoff` (a single question or errand).
+   - **`line_hint`, only for a run that went up with no `project` or
+     `repo_path`** (a run that has a line is never moved by it). Call
+     `suggest_line({ tags, category, scope })`: it ranks the user's lines
+     against your tags. Choose with judgement — the score sees words, you read
+     the conversation — and put the chosen `agent_id` in `line_hint`. If no
+     line fits and `scope` is `topic`, put a short name for a new line in
+     `line_hint.new_name` (in the conversation's language). If you are unsure,
+     omit `line_hint`: the server applies the same rule on its own, and a
+     one-off goes to its category (paid plans) or stays 未分類. If
+     `suggest_line` is not among your tools, the installed CLI is older than
+     0.2.5: skip `line_hint` (and say in Part 3 that tags need
+     `@actario/cli` 0.2.5 or later if `submit_daf` returns no `lines`).
+7. **Fill `analyzer`.** `kind: "agent_session"`, `model` if you know it,
    `skill_version` = this plugin's version, `produced_at` = now, and
-   **`prompt_version: "client-notes@2026-10-14"`** — always set it yourself;
+   **`prompt_version: "client-notes@2026-10-19"`** — always set it yourself;
    the CLI's template may name an older rubric. (This is the
    `client-segments@2026-10-04` segment rubric plus the progress-summary
-   note page, conclusion first, in three layers.)
-7. **Check the language, then submit.** Re-read each `topic`, `summary` and
+   note page, conclusion first, in three layers, plus run tags and the line.)
+8. **Check the language, then submit.** Re-read each `topic`, `summary` and
    the note page against its run: a Chinese conversation with English
    summaries is wrong — rewrite those before sending. `submit_daf` checks
    the DAF against the local bundle with the same resolver the server runs,
    then uploads it and waits.
-8. **What the server does with it.** The DAF is untrusted input. Shape
+9. **What the server does with it.** The DAF is untrusted input. Shape
    violations (a string over its cap, a bad timestamp) refuse the whole file.
    Each segment's `run_hash` must name a run in the workspace and both turn
    indices must exist in it, or that segment alone is dropped
@@ -350,8 +421,12 @@ analysis is of the bundle you just made and not an older one.
    local check reports this before sending, so fix the range and submit
    again. A page that lands becomes a new version; if the user has edited
    that page on the web, theirs stays and yours is kept as a draft
-   (`pages[].current: false`). A validation report is stored on the upload.
-9. **What the user sees.** Agents page → the line → *Recent runs*: each run
+   (`pages[].current: false`). Tags that break the rules are dropped one by
+   one, never the DAF; a run with no line is filed by `line_hint` if it names
+   a line the user may file into, else by the same rule `suggest_line` shows
+   (`server_would`); the answer's `lines[]` says where each run went. A
+   validation report is stored on the upload.
+10. **What the user sees.** Acta page → the line → *Recent runs*: each run
    folds out a *Summary* listing its segments as `topic · turns a–b` with the
    summary under it and a *Note page →* link, and the conversation itself is
    on the right. The note page is at `/runs/<id>/note`.
@@ -381,7 +456,7 @@ Output these, in the user's language:
    N is the number of segments the server wrote (`report.counts.segments.written`).
    The link is the `url` of the page in `submit_daf`'s `pages` list. With no
    page written, drop 「和一頁筆記」 and link `review_at` with its trailing
-   `/inbox` removed — the Agents page. If `submit_daf` came back `queued`
+   `/inbox` removed — the Acta page. If `submit_daf` came back `queued`
    with no report yet, say the analysis was sent and will appear on the web
    shortly, instead of giving N.
 2. What the DAF stage did, one line per segment: 「turns a–b：<topic>」.
@@ -400,9 +475,24 @@ Add one extra line only when one of these is true:
 - redactions > 0 → say how many, and that a credential may have been in the
   conversation and should be rotated.
 - segments were dropped for unresolvable anchors → say how many.
-- the record went up with neither `project` nor `repo_path` → say the run is
-  not on any line, so it will not appear on the Agents page (only under
-  `/runs?unbound=1`), and that recapturing will not move it.
+- `submit_daf`'s `lines[]` filed a run that had no line → say which line it
+  went to (「歸到 <name>」), and if `line.created` is true that a new line was
+  made for it; if `needs_review` is true add 「信心不高，可以在網頁上搬」.
+  If `line` is null, say it is 未分類 (only under `/runs?unbound=1`) and can
+  be moved on the conversation page; if `suggested_line_name` is set, say it
+  could become its own line with that name (the plan's line limit stopped it).
+- `project` came from rule 3 (a restored run's line), so nobody confirmed
+  it → say 「歸到 <X>（沿用復原的那條 line，不對可以在網頁上搬）」.
+- `submit_daf`'s `continued` (or `list_runs`' `continuation`) lists this run →
+  `append`: 「這段對話之前存過，這次接在原本那一筆後面（+<added_turns> 輪）」;
+  `replace`: 「這次的內容跟上次存的對不上，存成新版本，上一版還在」;
+  `noop`: 「這段對話已經是最新的，沒有新內容」. With `anchorable: false`, add
+  「這次沒有更新筆記頁」.
+- `list_runs` shows `continuation.mode: "dropped"` (`continues_mismatch` or
+  `continues_target_missing`) → nothing from this capture landed: say the
+  earlier capture of this chat has changed since (or is not on the server),
+  and capture the whole conversation again without `continues_from` if you
+  still can.
 - a page came back `current: false` → say the note page had been edited on
   the web, so this write-up was saved as a draft version and their edits were
   kept.

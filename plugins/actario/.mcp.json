@@ -4,7 +4,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@actario/cli@^0.2.3",
+        "@actario/cli@^0.2.6",
         "mcp"
       ]
     },

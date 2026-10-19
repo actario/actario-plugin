@@ -138,7 +138,7 @@ or write it anywhere.
 ## Keep the line
 
 A restored conversation that is captured again becomes a **new run**, and a
-run is only listed on the Agents page if its record names a `project` or
+run is only listed on the Acta page if its record names a `project` or
 `repo_path` (`actario-capture-chat`, field rules). Nothing carries the old
 run's line over automatically: `fetch_run` returns the line's *name*, not the
 `project` value it was created from.

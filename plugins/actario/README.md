@@ -27,7 +27,7 @@ agent.
 - **Runs stay on their line** (0.1.8) — a chat in a Cowork / claude.ai
   Project is captured under that project's line, and a restored conversation
   that is captured again is offered the line it came from, so it shows up on
-  the Agents page instead of the unbound queue.
+  the Acta page instead of the unbound queue.
 
   What comes back is the conversation, not the computer: file contents and
   diffs, attachments, tool output past 8 KB and the real values behind
@@ -55,7 +55,7 @@ agent.
   output). "make a deck of the B1 work for my manager" has your agent write
   the story and renders a .pptx on your machine (`~/.actario/decks/`); the
   web's **Export PowerPoint** gives the note page as it is, for comparison.
-- **Twenty-eight tools**, served by a program on your own machine:
+- **Thirty-two tools**, served by a program on your own machine:
 
   | tool | what it does |
   |---|---|
@@ -63,7 +63,8 @@ agent.
   | `capture` | scan, redact, score, pack, upload |
   | `list_runs` | what is in a captured batch — no content |
   | `read_run` | one conversation's turns |
-  | `submit_daf` | validate the topic summaries and note page, redact them, upload them |
+  | `submit_daf` | validate the topic summaries, note page and tags, redact them, upload them |
+  | `suggest_line` | rank your lines against a conversation's tags, so it is filed on the right one |
   | `doctor` | which sources this machine has, and whether they parse |
   | `find_runs` | find your uploaded conversations by title, line or date — no content |
   | `search` | search note pages, summaries and conversation text — never tool output |
@@ -123,7 +124,7 @@ otherwise see your files or reach your API.
 ## Requirements
 
 - **Node 20 or newer on your PATH.** The MCP server is
-  `npx -y @actario/cli@^0.2.3 mcp`; with no Node the plugin installs cleanly and then
+  `npx -y @actario/cli@^0.2.6 mcp`; with no Node the plugin installs cleanly and then
   has no tools, which looks like a broken plugin rather than a missing
   runtime. Check with `node --version`.
 - **An Actario account.** Linking signs you in through the browser; no token to copy.
