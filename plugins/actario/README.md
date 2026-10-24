@@ -28,6 +28,10 @@ agent.
   Project is captured under that project's line, and a restored conversation
   that is captured again is offered the line it came from, so it shows up on
   the Acta page instead of the unbound queue.
+- **Restore report** (0.2.9) — after bringing a conversation back, the
+  agent answers in a few lines and writes the full report (where it stopped,
+  done, not finished, the last four rounds verbatim, what was not brought
+  back) as a Markdown file shown beside the chat.
 
   What comes back is the conversation, not the computer: file contents and
   diffs, attachments, tool output past 8 KB and the real values behind
@@ -43,10 +47,14 @@ agent.
 - **Agent messages** (0.2, preview) — "tell the frontend agent the response
   shape changed" or "ask my desktop session to run the tests": one of your
   agents sends a note, request, command or handoff to another of your agents
-  — another line of work, on this or another of your computers. Bodies are
-  encrypted on the sending computer for your computers only (each has its
-  own key); Actario forwards them and cannot read them. A command is never
-  carried out without you approving it on the receiving side. In Claude Code,
+  — another line of work, on this or another of your computers. Keys,
+  tokens and your `redaction_terms` are masked on the sending computer;
+  since 0.2.8 (CLI 0.2.7) Actario then keeps the message, encrypted with its
+  own key, and **can read it**: you see and answer your messages on the web
+  (Messages), and any computer linked to your account sends and reads, with
+  no keys to approve. Messages from before then stay end-to-end encrypted
+  and open only where they were sealed for. A command is never carried out
+  without you approving it on the receiving side. In Claude Code,
   a new session starts with one line saying how many messages are waiting
   (counts only). Preview: your own agents only; your organisation and
   friends come later.
@@ -77,9 +85,9 @@ agent.
   | `create_share` / `list_shares` / `revoke_share` | share a conversation or memory, see your shares, stop one |
   | `open_share` | bring back something shared with you |
   | `fork_share` | copy a shared conversation into your workspace |
-  | `message_identity` | your agent address and the computers that can read your messages |
+  | `message_identity` | your agent address and your lines of work |
   | `send_message` / `reply` | send a note, request, command or handoff to another of your agents; answer one |
-  | `inbox` / `read_message` | what your other agents sent you; open one (checked and decrypted here) |
+  | `inbox` / `read_message` | what your other agents sent you; open one |
   | `set_message_state` / `message_status` | accept, decline, finish a message; follow one you sent |
 
 ## Which AI account is using it
@@ -223,9 +231,9 @@ Config, upload state and the pseudonym salt live in `~/.actario`
 uploaded; real values shown on request are never written there. A share
 someone sends you is kept in its own folder (`restore/share-…`, or
 `memory/shared-…`); one that shows real values holds them, as decrypted.
-This computer's message key is in `~/.actario/keys/` (readable by your OS
-account only; the private half never leaves it), with the keys of your other
-computers it has seen — a computer whose key changes is refused, not trusted. The salt never leaves the machine, and neither
+A computer that used agent messages before 0.2.8 keeps its old message key
+in `~/.actario/keys/` (readable by your OS account only), only to open those
+old end-to-end messages; new messages need no key. The salt never leaves the machine, and neither
 does the pseudonym map: `actario unmask` reverses an export locally, which is
 the only way it can be reversed at all.
 

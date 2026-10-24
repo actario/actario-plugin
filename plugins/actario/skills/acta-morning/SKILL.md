@@ -44,7 +44,7 @@ On the `actario` MCP server (`@actario/cli` 0.2.4 or later):
 
 `fetch_memory_sources` gives you a `pack_id`: that is a local scratch id. Do
 **not** call `save_memory` — the brief is not a memory pack unless the user
-asks for one (then follow `actario-memory`).
+asks for one (then follow `acta-memory`).
 
 **The pass.** Every tool but `link`, `link_status`, `doctor` and
 `set_local_key` takes a `pass`: call `local_pass` on the Actario connector
@@ -80,7 +80,7 @@ gone. If the newest run is more than 3 days old, say so in the opening line
 ("上次工作是 10/09，九天前").
 
 No runs at all: say there is nothing saved in Actario yet, offer
-`actario-capture-chat` for future days, and stop.
+`acta-capture-chat` for future days, and stop.
 
 ### 2. Bring the memory back
 
@@ -152,7 +152,7 @@ From `find_runs` since Monday 00:00 (ISO week, this machine's time zone;
 `limit: 50`, follow `next_cursor` if there is one):
 conversations this week, on how many lines, the busiest line. On the first
 working day of the week, add one line about last week's report: offer
-`actario-weekly-report` (write one) or the web (**Acta → the line → Weekly
+`acta-weekly-report` (write one) or the web (**Acta → the line → Weekly
 reports**).
 
 ### 6. Write the brief
@@ -241,7 +241,7 @@ this client has one. Then do exactly what was picked, nothing more — read
 `references/dispatch.md` before the first dispatch:
 
 - **A — here**: `fetch_run` the package's run in `hybrid` mode (as in
-  `actario-restore`: say what comes back is the conversation, not the
+  `acta-restore`: say what comes back is the conversation, not the
   computer), confirm the goal in one line, and carry on. Mention the line
   the run is on, so a later capture of this conversation lands on it.
 - **B — subagents**: one self-contained brief per package, parallel only when

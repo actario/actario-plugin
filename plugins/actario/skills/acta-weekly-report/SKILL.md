@@ -1,5 +1,5 @@
 ---
-name: actario-weekly-report
+name: acta-weekly-report
 description: "Write a weekly report for a line of work saved in Actario: fetch that week's conversations and their note pages, re-tell the week for a reader (what it amounted to, done, still open, next week), save it as the line's \"Your agent\" version, and download it as PowerPoint, PDF, Markdown and Word. Use when asked for a weekly report, 週報, a week's summary or a weekly update of an Actario line, or to download one."
 ---
 

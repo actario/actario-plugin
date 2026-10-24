@@ -1,5 +1,5 @@
 ---
-name: actario-memory
+name: acta-memory
 description: "Build a memory from conversations saved in Actario so a new conversation can start with what earlier ones knew, without reading them in full: download the runs of a line of work, a date range or a hand-picked set to this machine, compact them here into one anchored actario.memory/v1 pack (goal, status, to-do, conventions, files and commands, pseudonym legend), save it, and load it. Also loads a pack saved earlier. Use when asked for a memory, a recap, a briefing or context from earlier Actario sessions, or to load or refresh one."
 ---
 
@@ -33,7 +33,7 @@ On the `actario` MCP server (plugin 0.1.7, `@actario/cli` 0.1.4 or later):
 | `save_memory` | check and save the pack; `upload: true` to also store it on the server |
 | `load_memory` | load a saved pack (no `pack_id`: list them) |
 
-`not_linked` → `link` with no arguments, as in `actario-capture-chat`.
+`not_linked` → `link` with no arguments, as in `acta-capture-chat`.
 
 ## The pass: this Claude account must be bound to Actario
 

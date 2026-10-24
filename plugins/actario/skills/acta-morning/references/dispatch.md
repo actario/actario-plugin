@@ -24,7 +24,7 @@ without them saying so again.**
 1. `fetch_run` the package's run, `mode: "hybrid"` (`transcript` if it is
    short). Tell the user in one line what came back and what did not (file
    contents, attachments, tool output past 8 KB, real values — as in
-   `actario-restore`).
+   `acta-restore`).
 2. Say the line the run is on (`run.agent`), so when this conversation is
    captured later it goes to the same line.
 3. Confirm the goal and the first step; then work as in any session.
@@ -67,7 +67,7 @@ cannot, say so and offer A (one after another) or C instead.
 ## C — hand to the line's own session
 
 For work that belongs to another line: another project, another computer, a
-session that already has the context. Through `actario-messages` rules.
+session that already has the context. Through `acta-messages` rules.
 
 1. **`from`** is this conversation's line: the project this session is
    attached to, if any; otherwise ask the user once which line the morning

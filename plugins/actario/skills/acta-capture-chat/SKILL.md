@@ -1,5 +1,5 @@
 ---
-name: actario-capture-chat
+name: acta-capture-chat
 description: "Capture the conversation you are in right now into Actario, then summarise it into topic segments and write it up as a note page — a progress summary of the whole session, with step-by-step debugging condensed to what was done and how far it got — shown next to it on the web. Use when asked to save, capture, export, distil, analyse, write up, or hand off this conversation to Actario or to another agent, or to turn it into notes."
 ---
 
@@ -158,8 +158,8 @@ Field rules, in order of how badly getting them wrong hurts:
      — same spelling and case, because the server binds by exact match and
      `Distill` and `distill` are two different lines. This is the usual case
      in Cowork; do not skip it because the user did not repeat the name.
-  3. **This conversation restored an earlier run** (`actario-restore` or
-     `actario-memory` ran here) whose line is named `<X> conversations`.
+  3. **This conversation restored an earlier run** (`acta-restore` or
+     `acta-memory` ran here) whose line is named `<X> conversations`.
      That line was created from `project: "<X>"`, so `<X>` is the value that
      keeps the continuation on the same line — but it is a strong hint, not
      a fact. Use it without asking; if 2 also applies and the names differ,
@@ -189,8 +189,8 @@ Field rules, in order of how badly getting them wrong hurts:
      returned;
   3. otherwise omit it. The server still recognises a continuation by the
      user's own words, as long as you write the user turns verbatim.
-  **Never** take an id from another chat — not from a run `actario-restore`
-  or `actario-memory` brought in, not from a share link. A restored
+  **Never** take an id from another chat — not from a run `acta-restore`
+  or `acta-memory` brought in, not from a share link. A restored
   conversation continued here is a new conversation on the same line.
 - **`continues_from`: only when the early part is gone from your context.**
   If this chat was captured before (you can see that earlier `capture`

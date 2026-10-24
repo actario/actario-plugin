@@ -40,7 +40,7 @@ On the `actario` MCP server (`@actario/cli` 0.2.5 or later):
 | `read_staged` | one staged session: `view: "brief"` (every turn short, no tool output) to summarise it; `"full"` only if brief is not enough |
 | `upload_staged` | upload the chosen ones (`upload`), remember the declined ones (`skip`); returns a `bundle_id` |
 | `upload_rules` | list, or `set`, each line's rule: `auto` or `review` |
-| `list_runs`, `read_run`, `submit_daf` | the note pages, on the uploaded bundle, as in `actario-capture-chat` Part 2 |
+| `list_runs`, `read_run`, `submit_daf` | the note pages, on the uploaded bundle, as in `acta-capture-chat` Part 2 |
 | `find_runs` | what is already in Actario from today (other computers, cloud chats) |
 
 **The pass.** Every tool but `link`, `link_status`, `doctor` and
@@ -54,10 +54,10 @@ computer may open it; on `pass_required`, tell the user to connect
 
 **`stage_sessions` is not there** (an older CLI): say acta-bye needs
 `@actario/cli` 0.2.5 or later — a restart of the app picks it up once
-released — and offer `actario-capture-chat` to save this conversation now.
+released — and offer `acta-capture-chat` to save this conversation now.
 
 **Without the local plugin** (claude.ai on the web, a phone): there is no
-computer to scan. Say so in one line and offer `actario-capture-chat` for
+computer to scan. Say so in one line and offer `acta-capture-chat` for
 this conversation only.
 
 ## Steps
@@ -70,11 +70,11 @@ Decide before scanning:
   finds it. Pass no `record`.
 - **Cowork or Claude desktop, and this conversation did real work before the
   user said bye**: build a `distill.chat/v1` record of it exactly as
-  `actario-capture-chat` Part 1 says (verbatim turns, Markdown kept, no
+  `acta-capture-chat` Part 1 says (verbatim turns, Markdown kept, no
   redacting, `project` / `repo_path` only when explicitly known, real dates
   only) and pass it as `record`. **Do not ask for the title**: use your
   recommended name, with the app's name in parentheses only if it is visible
-  to you (`actario-capture-chat`, the `title` rule).
+  to you (`acta-capture-chat`, the `title` rule).
 - **The conversation is only the wrap-up itself**: no record.
 
 ### 2. Stage
@@ -98,7 +98,7 @@ count them in the list; they are not staged.
 and leave no file here, so no scan can see them. When this conversation is a
 Cowork one, add one line to the list: other Cowork chats from today that
 are not in the count above must be saved from inside them (`acta-bye` or
-`actario-capture-chat` there).
+`acta-capture-chat` there).
 
 ### 3. Summarise each session
 
@@ -194,11 +194,11 @@ and `skip` = the rows the user explicitly declined (not the ones left
 ### 7. Write the note pages
 
 For every uploaded session, on the `bundle_id` from step 6, do exactly
-`actario-capture-chat` **Part 2**: `list_runs` → `read_run` (all of it) →
+`acta-capture-chat` **Part 2**: `list_runs` → `read_run` (all of it) →
 segments and **one note page**, conclusion first, in the language the user
 wrote in that session → `submit_daf`. Read that skill's
 `references/note-page.md` and `references/analysis-rubric.md` before the
-first page (they sit in the `actario-capture-chat` skill folder). Its rules
+first page (they sit in the `acta-capture-chat` skill folder). Its rules
 hold unchanged: `entries` and `agent_states` stay `[]`, anchors are
 `(run_hash, turn_idx)` copied from `read_run`, and the page is written only
 from what `read_run` returned.
@@ -211,7 +211,7 @@ segments and page replace any earlier ones, so a retry is safe. Set
 
 A `submit_daf` that fails does not undo the upload: the session is saved;
 say its note page is missing and can be written later with
-`actario-capture-chat`'s Part 2.
+`acta-capture-chat`'s Part 2.
 
 ### 8. Report back
 

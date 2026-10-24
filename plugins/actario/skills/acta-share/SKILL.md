@@ -1,6 +1,6 @@
 ---
-name: actario-share
-description: "Share a conversation (run) or a memory saved in Actario with other people, list or revoke the user's shares, or copy a shared conversation into the user's own workspace. Use when asked to share, send, give someone access to, or make a link for an Actario conversation, note or memory; to see or stop sharing ('who did I share this with', 'revoke that link'); or to fork/copy a shared conversation. Opening a share link someone sent is the actario-restore skill."
+name: acta-share
+description: "Share a conversation (run) or a memory saved in Actario with other people, list or revoke the user's shares, or copy a shared conversation into the user's own workspace. Use when asked to share, send, give someone access to, or make a link for an Actario conversation, note or memory; to see or stop sharing ('who did I share this with', 'revoke that link'); or to fork/copy a shared conversation. Opening a share link someone sent is the acta-restore skill."
 ---
 
 # Share from Actario
@@ -47,7 +47,7 @@ and says why — tell the user, do not look for a way around it.
 | `list_shares` | the user's shares: audience, opens, restores, forks, expiry, status |
 | `revoke_share` | stop one (`share` = its id) |
 | `fork_share` | copy a shared conversation (that allows fork) into the user's workspace |
-| `open_share` | open a link someone sent — see `actario-restore` |
+| `open_share` | open a link someone sent — see `acta-restore` |
 
 If these are missing, the installed CLI is older than 0.1.5: say so and stop.
 On `not_linked`, call `link` with no arguments (browser sign-in).
