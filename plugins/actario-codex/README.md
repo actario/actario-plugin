@@ -4,4 +4,4 @@ This package adds the acta-capture-chat skill and runs the Actario CLI MCP serve
 
 Requirements: Node.js 20 or newer and an Actario account. On first use, the local CLI may ask you to link this computer; the account MCP connection is authorized separately in Codex.
 
-Install from the actario-dev marketplace with codex plugin add actario@actario-dev.
+Install from the actario-plugins marketplace with codex plugin add actario@actario-plugins.

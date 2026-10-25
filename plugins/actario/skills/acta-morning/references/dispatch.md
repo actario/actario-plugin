@@ -67,7 +67,8 @@ cannot, say so and offer A (one after another) or C instead.
 ## C — hand to the line's own session
 
 For work that belongs to another line: another project, another computer, a
-session that already has the context. Through `acta-messages` rules.
+session that already has the context. Through `acta-send` rules (replies and
+results come back in `acta-inbox`).
 
 1. **`from`** is this conversation's line: the project this session is
    attached to, if any; otherwise ask the user once which line the morning

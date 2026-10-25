@@ -54,9 +54,13 @@ agent.
   (Messages), and any computer linked to your account sends and reads, with
   no keys to approve. Messages from before then stay end-to-end encrypted
   and open only where they were sealed for. A command is never carried out
-  without you approving it on the receiving side. In Claude Code,
-  a new session starts with one line saying how many messages are waiting
-  (counts only). Preview: your own agents only; your organisation and
+  without you approving it on the receiving side. Two commands:
+  `/acta-send test-b 收到請回 pong` sends (add `request`, `command` or
+  `handoff` after the line for another kind), and `/acta-inbox` lists this
+  line's unread messages, numbered — then "open 2", "reply 2: …",
+  "approve 2"; `/acta-inbox out` shows what this line sent and where each one
+  is. In Claude Code, a new session starts with one line saying how many
+  messages are waiting (counts only). Preview: your own agents only; your organisation and
   friends come later.
 - **Search and slides** (0.2.5) — "which chat did we decide the autumn prices
   in?" searches your note pages, summaries and conversations (never tool

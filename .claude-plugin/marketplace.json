@@ -10,7 +10,7 @@
       "displayName": "Actario",
       "source": "./plugins/actario",
       "description": "Capture your AI conversations into Actario — redacted on your own machine, summarised by your own agent — and bring them back: restore a conversation into a new chat, build a memory from several, share one with your team, or send messages between your own agents, readable and answerable on the web too (preview).",
-      "version": "0.2.9",
+      "version": "0.2.10",
       "author": {
         "name": "Jacky Li"
       },
