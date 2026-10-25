@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "actario": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@actario/cli@^0.2.7",
+        "mcp"
+      ]
+    },
+    "actario-account": {
+      "type": "streamable-http",
+      "url": "https://actario.app/api/mcp",
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "cimd"
+            }
+          }
+        }
+      }
+    }
+  }
+}

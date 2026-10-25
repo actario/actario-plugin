@@ -1,79 +1,57 @@
-# Actario plugin marketplace
+# Actario plugins
 
-The Claude Code marketplace that serves the **Actario** plugin.
+This repository serves **Actario** plugins for Claude Code and Codex. The
+Codex package includes the local capture skill and needs Node.js 20 or newer.
 
-Actario captures your AI conversations, redacts them on your own machine, and
-distils them into decisions, facts and open questions that stay **pending**
-until you confirm them.
+Actario captures AI conversations, redacts them on the user's computer, and
+distils them into decisions, facts, and open questions. The OpenAI plugin
+connects ChatGPT and Codex to saved Actario sessions through the hosted MCP
+server. Capturing a conversation still requires the Actario CLI/plugin on a
+computer.
 
-## Install
+## Install in Codex
 
-In Claude Code:
+Add this repository as a plugin marketplace, then install Actario:
 
+```sh
+codex plugin marketplace add actario/actario-plugin --sparse .agents/plugins --sparse plugins/actario-codex
+codex plugin add actario@actario-plugins
 ```
+
+Connect your Actario account when prompted. The plugin uses OAuth with
+`https://actario.app/api/mcp` and runs the local CLI MCP server for capture;
+it does not store your Actario password or API token in the package.
+
+## Install in Claude Code
+
+```sh
 /plugin marketplace add actario/actario-plugin
 /plugin install actario@actario
 ```
 
-Then, in any chat:
+Then link the computer to Actario:
 
-```
+```text
 link my machine to Actario
 ```
 
-and approve the sign-in in the browser tab that opens (or, without a browser,
-at the URL and code Claude shows you). Verify with **"run Actario's doctor"**.
+The Claude plugin runs `npx -y @actario/cli mcp`, so it requires Node 20 or
+newer. Full Claude plugin documentation:
+[`plugins/actario/README.md`](plugins/actario/README.md).
 
-Full plugin documentation: [`plugins/actario/README.md`](plugins/actario/README.md).
+## Repository layout
 
-## Requirements
-
-**Node 20 or newer on your PATH.** The plugin's MCP server is
-`npx -y @actario/cli mcp`. Without Node the plugin installs cleanly and then
-serves no tools — which reads as a broken plugin rather than a missing
-runtime. Check with `node --version` before filing anything.
-
-## What is actually in this repository
-
-Three config files and a skill. That is the whole plugin:
-
-```
-.claude-plugin/marketplace.json     this catalogue
-plugins/actario/
-  .claude-plugin/plugin.json        the plugin manifest
-  .mcp.json                         npx -y @actario/cli mcp
-  skills/actario-capture-chat/      the skill that drives the tools
-  README.md
+```text
+.claude-plugin/marketplace.json     Claude marketplace
+plugins/actario/                    Claude plugin
+.agents/plugins/marketplace.json   Codex marketplace
+plugins/actario-codex/              Codex desktop plugin with local capture
+plugins/actario-openai/             remote MCP package for OpenAI submission
 ```
 
-The program the plugin launches is [`@actario/cli`](https://www.npmjs.com/package/@actario/cli),
-published separately on npm and fetched on first run. The Actario web
-application, backend and database are not part of this repository.
-
-## Updating
-
-Claude Code refreshes marketplaces shortly after a session starts and updates
-installed plugins in place; `/reload-plugins` activates a new version in the
-current session. Updates are pinned to the `version` field in
-`plugins/actario/.claude-plugin/plugin.json`, so a change only reaches
-installed users when that field is bumped.
-
-To force a refresh:
-
-```
-/plugin marketplace update actario
-```
-
-Note that `@actario/cli` is *not* pinned — `.mcp.json` says `npx -y @actario/cli`,
-so every run picks up the latest published CLI regardless of the plugin
-version.
-
-## Desktop app
-
-Claude Code's `/plugin` command is the documented path for adding a
-marketplace. The Claude desktop app has a plugin browser for installing from
-marketplaces that are already configured; the documentation does not describe
-adding a marketplace from that UI.
+The ChatGPT submission ZIP is generated separately from the Actario app
+repository with `npm run pack:chatgpt` and submitted through the OpenAI plugin
+review process.
 
 ## Licence
 
