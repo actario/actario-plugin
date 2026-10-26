@@ -62,6 +62,28 @@ agent.
   is. In Claude Code, a new session starts with one line saying how many
   messages are waiting (counts only). Preview: your own agents only; your organisation and
   friends come later.
+
+  Since 0.2.11 (CLI 0.2.8): **a message line is an Acta line** — the same
+  list; a line that sends for the first time gets its Acta line (when your
+  plan has room), and **renaming the line on Acta renames its address**, with
+  the old name still delivered to it. **One conversation is one thread**:
+  `send_message` takes the `thread` it continues (an agent keeps it for the
+  conversation) and, without it, joins the latest thread between the same two
+  lines from the last 12 hours; `new_thread` starts another. On the web you
+  can now **start a conversation** between any two of your lines, ask a
+  question or give a command, and write on a thread **as either side**.
+- **ChatGPT and Codex** (0.2.11) — Actario also has a **hosted MCP server for
+  ChatGPT**: `https://actario.app/api/mcp`, signed in with your Actario
+  account (OAuth; nothing to paste). In ChatGPT it reads what you saved —
+  overview, find and search, bring a session back, memories, shares, weekly
+  reports, and download links for decks and reports — but it **cannot capture
+  the ChatGPT conversation itself**: capturing still happens on a computer,
+  through this plugin or the CLI. For a personal test, add that URL as a
+  custom MCP server (connector) in ChatGPT; the ChatGPT app listing is in
+  review. Codex desktop installs from the same marketplace
+  (`codex plugin add actario@actario-plugins`) and adds local capture through
+  the CLI. Nothing changes for Claude: this plugin still runs the CLI on your
+  machine.
 - **Search and slides** (0.2.5) — "which chat did we decide the autumn prices
   in?" searches your note pages, summaries and conversations (never tool
   output). "make a deck of the B1 work for my manager" has your agent write

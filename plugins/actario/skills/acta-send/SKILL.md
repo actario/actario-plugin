@@ -80,6 +80,15 @@ they did not ask for. Call `send_message`:
 | `subject` | one line you write from the message (under ~60 characters) unless the user gave one |
 | `body` | the message as the user meant it |
 | `capabilities` | command only: what doing it needs over there — `read`, `run_tests`, `edit`, `vcs_local` (commit, no push), `external` (push, release, send, delete, outside calls). Pick the least that covers the task |
+| `thread` | the `thread_id` of this conversation's earlier message (below) |
+
+**One conversation, one thread.** Keep the `thread_id` that `send_message`,
+`reply` or `read_message` returns, and pass it as `thread` on every later
+message of this conversation, to whichever line — the user then sees one
+conversation on the web, not a new one per message. Without it Actario still
+joins the latest thread between the same two lines from the last 12 hours.
+Pass `new_thread: true` only when the user starts a different subject
+("另開一串", "new topic"). (CLI 0.2.8 and later; an older one ignores both.)
 
 A **handoff** passes a share link: make it first with `create_share` (the
 `acta-share` skill), then send it as `share_url` with a line on what it is.

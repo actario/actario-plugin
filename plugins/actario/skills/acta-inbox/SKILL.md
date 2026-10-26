@@ -94,7 +94,10 @@ message's history, `message_status`.
   for this line). Show from · kind · subject · via, then the body, then what
   the user can do next in one line ("回 2：… / 核准 2 / 拒絕 2").
 - **Reply** (note, request, or a reply in a thread): `reply` with `from` =
-  this line; leave `subject` out (it becomes "Re: <their subject>").
+  this line; leave `subject` out (it becomes "Re: <their subject>"). A reply
+  stays on the message's thread; if the user then sends that line something
+  new with `/acta-send`, pass the same `thread_id` as `thread` so the
+  conversation stays one thread.
 - **Approve a command**: `set_message_state` `working`, do only what the user
   approved, then `reply` with `kind: "result"` and `status` `completed` or
   `failed`, saying what was done and what came out.
