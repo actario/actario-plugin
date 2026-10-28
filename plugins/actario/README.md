@@ -72,6 +72,11 @@ agent.
   lines from the last 12 hours; `new_thread` starts another. On the web you
   can now **start a conversation** between any two of your lines, ask a
   question or give a command, and write on a thread **as either side**.
+  Since 0.2.12 (CLI 0.2.9) each message also carries the **title of the
+  conversation that sent it** — the name the app shows for that chat, read
+  from the session on your computer, nothing for the agent to fill in — and
+  the web shows that title instead of the bare line name (the line is still
+  the address).
 - **ChatGPT and Codex** (0.2.11) — Actario also has a **hosted MCP server for
   ChatGPT**: `https://actario.app/api/mcp`, signed in with your Actario
   account (OAuth; nothing to paste). In ChatGPT it reads what you saved —
