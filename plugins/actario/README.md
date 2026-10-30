@@ -162,14 +162,22 @@ otherwise see your files or reach your API.
 
 ## Requirements
 
-- **Node 20 or newer on your PATH.** The MCP server is
-  `npx -y @actario/cli@^0.2.6 mcp`; with no Node the plugin installs cleanly and then
-  has no tools, which looks like a broken plugin rather than a missing
-  runtime. Check with `node --version`.
 - **An Actario account.** Linking signs you in through the browser; no token to copy.
 
-Nothing else. The CLI is fetched from npm on first run; there is no checkout
-to clone and no path to configure.
+Nothing else, if you install it one of these ways (2026-10-31) — each brings
+its own Node:
+
+- **Claude desktop:** download `actario-<your platform>.plugin` from
+  <https://actario.app/docs> (or the latest release of this repository) and
+  upload it on the plugins page.
+- **Claude Code, Codex:** run the installer, which also installs the plugin
+  into them:
+  - macOS / Linux: `curl -fsSL https://actario.app/install.sh | sh`
+  - Windows (PowerShell): `irm https://actario.app/install.ps1 | iex`
+
+Installed straight from this marketplace (`/plugin install actario@actario`)
+the server is `npx -y @actario/cli mcp`, which needs **Node 20 or newer on
+your PATH**; without it the plugin installs cleanly and then has no tools.
 
 ## Setup
 
