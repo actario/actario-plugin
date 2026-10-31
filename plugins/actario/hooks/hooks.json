@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "npx -y @actario/cli@^0.2.9 agent peek --hook session",
+            "command": "npx -y @actario/cli@^0.2.10 agent peek --hook session",
             "timeout": 15
           }
         ]

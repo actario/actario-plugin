@@ -1,9 +1,9 @@
 ---
 name: acta-send
-description: "Send a message from this line of work to another of the user's own AI agents through Actario: a note, a question, a task (command) or a handoff of a shared conversation, to another line, computer or client. The user types /acta-send, optionally followed by the line to send to, the kind and the message. Use when asked to send, tell, ask, notify, hand off to, or give a task to another of the user's agents, lines or sessions (傳訊息給、告訴、通知、問一下、交給、派給另一條線). Reading what came in, and following what was sent, is acta-inbox."
+description: "Send a message from this line of work through Actario: a note, a question, a task (command) or a handoff of a shared conversation, to another of the user's own agents (another line, computer or client) or to another person's agent -- a contact or someone in the user's organisation (@handle). The user types /acta-send, optionally followed by who to send to, the kind and the message. Use when asked to send, tell, ask, notify, hand off to, or give a task to another of the user's agents, lines or sessions, or to a colleague or contact's agent (傳訊息給、告訴、通知、問一下、交給、派給另一條線、傳給 @某人). Reading what came in, and following what was sent, is acta-inbox."
 ---
 
-# Send to another agent (Actario, preview)
+# Send to another agent (Actario)
 
 The user's agents — other lines of work, on this or another of their
 computers, in Claude Code, Cowork or the desktop app — pass each other notes,
@@ -11,9 +11,11 @@ questions, tasks and handoffs through Actario. This skill sends. Checking
 what came in, replying, approving a command and following what was sent is
 **`acta-inbox`**.
 
-An address is `<handle>/<line>` (`message_identity` shows the handle). **This
-preview only connects the user's own agents**; anyone else is refused
-(`tier_not_allowed`).
+An address is `<handle>/<line>` (`message_identity` shows the handle). Besides
+the user's own agents, a message can go to **another person** who is a
+**contact** (both agreed, on the web) or **in the user's organisation** —
+`contacts` lists them. Anyone else is refused (`not_a_contact`): adding a
+contact is done by the user on the web (Messages → Contacts), never by you.
 
 Actario keeps messages encrypted with its own key and **can read them**: the
 user sees and answers them on the web (Messages), and so can the platform's
@@ -32,8 +34,10 @@ end-to-end secrecy; not every time.
 /acta-send as test-a test-b ...             -> send as line test-a (sets this conversation's line)
 ```
 
-- **Recipient** — the first word: a line name (`frontend`) or a full address
-  (`commonuse3483/frontend`).
+- **Recipient** — the first word: one of the user's lines (`frontend`), or
+  another person: `@bob` (their personal mailbox — any of their lines' agents
+  sees it) or `@bob/frontend` (a line they already have; a made-up line name
+  is refused — when unsure, use `@bob`).
 - **Kind** — optional second word: `note` (default), `request` (asks, expects
   a reply), `command` (asks for work, expects a result; the other side asks
   its user first), `handoff`. Chinese works too: 問／請問 = request,
@@ -67,6 +71,20 @@ Then keep it for the rest of the conversation, and use the same name as
 `agent` if `acta-inbox` runs later in it. Say the line in your report so the
 user can correct it.
 
+## To another person
+
+- Call `contacts` when the user names someone ("send it to Bob", "問一下
+  @carol") and you are not sure of the handle; use the `@handle` it lists.
+  Never guess a handle from a name.
+- If they are not there, say so and point the user to Messages → Contacts on
+  the web (add by handle, or send an invite link). You cannot add anyone.
+- Before sending to another person, **show the user the subject and message
+  you are about to send and wait for a yes** — it leaves the user's own
+  account. Send only what the user asked to share: no files, paths, keys,
+  credentials or context they did not put in the message.
+- A command to another person is carried out only after *their* user approves
+  it, like any command.
+
 ## Sending
 
 Only send what the user asked to send — never add files, secrets or context
@@ -75,7 +93,7 @@ they did not ask for. Call `send_message`:
 | field | |
 |---|---|
 | `from` | this conversation's line (above) |
-| `to` | the recipient |
+| `to` | the recipient: a line of the user's, `@handle` or `@handle/line` |
 | `kind` | note / request / command / handoff |
 | `subject` | one line you write from the message (under ~60 characters) unless the user gave one |
 | `body` | the message as the user meant it |
@@ -118,5 +136,7 @@ allowed to capture.
 
 | code | say |
 |---|---|
-| `tier_not_allowed` | this preview only connects the user's own agents |
+| `not_a_contact` | they are not a contact or in the user's organisation: the user adds them on the web (Messages → Contacts) — by handle, or an invite link |
+| `not_found` (`unknown_address`) | no such handle, or they have no line by that name: check the handle with `contacts`, or write to `@handle` |
+| `tier_not_allowed` | an old (v1) message format is for the user's own agents only; update the Actario plugin |
 | `messages_unavailable` | messages are not set up on this Actario server yet; try later |

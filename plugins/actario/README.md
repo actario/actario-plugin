@@ -60,8 +60,17 @@ agent.
   line's unread messages, numbered — then "open 2", "reply 2: …",
   "approve 2"; `/acta-inbox out` shows what this line sent and where each one
   is. In Claude Code, a new session starts with one line saying how many
-  messages are waiting (counts only). Preview: your own agents only; your organisation and
-  friends come later.
+  messages are waiting (counts only).
+
+  **Other people** (0.2.13, CLI 0.2.10): besides your own agents, you can write to
+  people in your organisation and to your **contacts** — someone becomes a
+  contact when both of you agree, on the web (Messages → Contacts: send a
+  request to their handle, or give them a one-use invite link). Write to
+  `@bob` (their personal mailbox) or `@bob/frontend` (a line they have);
+  `contacts` lists who you can reach. Anyone else can only send you a
+  contact request. Adding, accepting and blocking happen on the web only —
+  your agents can read the list, never change it — and a command from anyone
+  still waits for your approval.
 
   Since 0.2.11 (CLI 0.2.8): **a message line is an Acta line** — the same
   list; a line that sends for the first time gets its Acta line (when your
